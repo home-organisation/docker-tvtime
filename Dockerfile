@@ -1,4 +1,4 @@
-#Last package update 02 March 2024
+#Last package update 07 March 2024
 FROM zggis/plex-tvtime:latest
 LABEL Maintainer="bizalu"
 
