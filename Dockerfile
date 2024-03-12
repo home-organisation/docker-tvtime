@@ -1,6 +1,8 @@
 #Last package update 08 March 2024 1504
 FROM zggis/plex-tvtime:latest
-LABEL Maintainer="bizalu"
+LABEL org.opencontainers.image.source=https://github.com/home-organisation/docker-tvtime
+LABEL org.opencontainers.image.description="tvtime"
+LABEL org.opencontainers.image.licenses="GNU General Public License v3.0"
 
 # Package update
 RUN apk -U upgrade --no-cache
