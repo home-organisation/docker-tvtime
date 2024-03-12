@@ -1,4 +1,4 @@
-#Last package update 08 March 2024 1504
+#Last package update 12 March 2024 1525
 FROM zggis/plex-tvtime:latest
 LABEL org.opencontainers.image.source=https://github.com/home-organisation/docker-tvtime
 LABEL org.opencontainers.image.description="tvtime"
