@@ -106,9 +106,10 @@ jobs:
           # Image reported and enriched in Codefresh. Pass the [account-name]/[image-name]:[tag] built in your CI.
           CF_IMAGE: "ghcr.io/${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}"
           # The explicit ghcr authentication
-          CF_REGISTRY_USERNAME: "${{ github.actor }}"
-          CF_REGISTRY_PASSWORD: "${{ secrets.GITHUB_TOKEN }}"
-          CF_REGISTRY_DOMAIN: "ghcr.io"
+          CF_CONTAINER_REGISTRY_INTEGRATION: "github"
+          #CF_REGISTRY_USERNAME: "${{ github.actor }}"
+          #CF_REGISTRY_PASSWORD: "${{ secrets.GITHUB_TOKEN }}"
+          #CF_REGISTRY_DOMAIN: "ghcr.io"
           # Commit and Pull request data from this branch will be added to the image. Pass the Branch from the event payload used to trigger your action.
           CF_GIT_BRANCH: ${{ github.ref_name }}
           # Select the Issue tracking integration to use to enrich the image
