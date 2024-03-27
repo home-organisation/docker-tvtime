@@ -93,23 +93,23 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
-
-      - name: report image to codefresh
-        if: github.event_name != 'pull_request'
-        uses: codefresh-io/codefresh-report-image@latest
-        with:
-          CF_VERBOSE: true
+      # to debug when ovv cluster is ope
+      #- name: report image to codefresh
+      #  if: github.event_name != 'pull_request'
+      #  uses: codefresh-io/codefresh-report-image@latest
+      #  with:
+          #CF_VERBOSE: true
           # Codefresh token used to perform authentication with your account.  It is recommended to store as a secret variable. !! Committing a plain text token is a security risk. We highly recommend using encrypted secrets. !!
           # Documentation - https://docs.github.com/en/actions/security-guides/encrypted-secrets
-          CF_API_KEY: ${{ secrets.CODEFRESH_TOKEN }}
+          #CF_API_KEY: ${{ secrets.CODEFRESH_TOKEN }}
           # The name of the runtime that will perform the enrichment. All Integrations must configured on this runtime
-          CF_RUNTIME_NAME: 'codefresh-runtime-ovv'
+          #CF_RUNTIME_NAME: 'codefresh-runtime-ovv'
           # Image reported and enriched in Codefresh. Pass the [account-name]/[image-name]:[tag] built in your CI.
-          CF_IMAGE: "${{ env.IMAGE_NAME }}:main"
+          #CF_IMAGE: "${{ env.IMAGE_NAME }}:main"
           # The explicit ghcr authentication
-          CF_REGISTRY_USERNAME: ${{ github.actor }}
-          CF_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-          CF_REGISTRY_DOMAIN: ${{ env.REGISTRY }}
+          #CF_REGISTRY_USERNAME: ${{ github.actor }}
+          #CF_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          #CF_REGISTRY_DOMAIN: ${{ env.REGISTRY }}
           # Commit and Pull request data from this branch will be added to the image. Pass the Branch from the event payload used to trigger your action.
           #CF_GIT_BRANCH: ${{ github.ref_name }}
           # Select the Issue tracking integration to use to enrich the image
