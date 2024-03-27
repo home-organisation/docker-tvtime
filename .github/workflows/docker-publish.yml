@@ -104,7 +104,7 @@ jobs:
           # The name of the runtime that will perform the enrichment. All Integrations must configured on this runtime
           CF_RUNTIME_NAME: 'codefresh-runtime-ovv'
           # Image reported and enriched in Codefresh. Pass the [account-name]/[image-name]:[tag] built in your CI.
-          #CF_IMAGE: "${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}"
+          CF_IMAGE: "${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}"
           # The explicit ghcr authentication
           CF_REGISTRY_USERNAME: "${{ github.actor }}"
           CF_REGISTRY_PASSWORD: "${{ secrets.GITHUB_TOKEN }}"
