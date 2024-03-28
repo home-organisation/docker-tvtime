@@ -8,7 +8,8 @@ name: Docker
 on:
   push:
     branches: [ "main" ]
-    tags: [ '*.*.*' ]
+  release:
+    types: [ "prereleased" ]
   pull_request:
     branches: [ "main" ]
 
