@@ -1,13 +1,13 @@
 name: Release version
 
 on:
-  status
+  push:
+    branches: [ "main" ]
   
 jobs:
   release:
     #Create a pre-release with the content of version.txt file
     name: Create Pre-Release
-    if: github.event.state == 'success'
     runs-on: ubuntu-latest
     
     steps:
@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
 
       # Generate env variable VERSION based on version.txt file
-      - name: Generate image name
+      - name: Generate release version
         run: |
           cat ./version.txt | sed 's/^/VERSION=' >> $GITHUB_ENV
           
