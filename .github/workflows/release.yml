@@ -17,7 +17,7 @@ jobs:
       # Generate env variable VERSION based on version.txt file
       - name: Generate release version
         run: |
-          cat ./version.txt | sed 's/^/VERSION=' >> $GITHUB_ENV
+          cat ./version.txt | sed 's/^/VERSION=/g' >> $GITHUB_ENV
           
       # Generate pre-release version
       - name: Create Release
