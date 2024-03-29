@@ -7,9 +7,7 @@ name: Docker
 
 on:
   push:
-    branches: [ "main" ]
-  release:
-    types: [ "created" ]
+    tags: [ '*' ]
   pull_request:
     branches: [ "main" ]
 
@@ -97,6 +95,3 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
-
-          # Search for issue IDs matching this string to associate with your image. Pass a commit message or branch from the event payload used to trigger your action.
-          #CF_JIRA_MESSAGE: ${{ github.event.head_commit.message }}
