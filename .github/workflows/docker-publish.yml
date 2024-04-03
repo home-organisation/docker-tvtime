@@ -18,7 +18,6 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -101,9 +100,23 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
+  release:
+    if: ${{ github.event_name != 'pull_request' }}
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Generate env variable VERSION based on version.txt file
+      - name: Generate release version
+        run: |
+          cat ./version.txt | sed 's/^/VERSION=/g' >> $GITHUB_ENV
+          
       # Generate pre-release version
       - name: Create Release
-        if: ${{ github.event_name != 'pull_request' }}
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
@@ -111,3 +124,4 @@ jobs:
           tag_name: ${{ env.VERSION }}
           release_name: ${{ env.VERSION }}
           prerelease: true
+          draft: false
