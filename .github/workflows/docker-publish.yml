@@ -100,9 +100,29 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
+  promote_stage:
+    if: ${{ github.event_name != 'pull_request' }}
+    name: promote to stage
+    needs: build
+    environment: stage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: run Codefresh prommote pipeline
+        uses: codefresh-io/codefresh-pipeline-runner@v8
+        with:
+          args: '-v ENV=stage'
+        env:
+          PIPELINE_NAME: 'media-front/promote'
+          TRIGGER_NAME: 'home-organisation/docker-tvtime'
+          CF_API_KEY: ${{ secrets.CODEFRESH_TOKEN }}
+    
   release:
     if: ${{ github.event_name != 'pull_request' }}
-    needs: build
+    needs: promote_stage
     runs-on: ubuntu-latest
 
     steps:
@@ -123,5 +143,5 @@ jobs:
         with:
           tag_name: ${{ env.VERSION }}
           release_name: ${{ env.VERSION }}
-          prerelease: true
+          prerelease: false
           draft: false
