@@ -38,12 +38,14 @@ jobs:
         id: image
         run: |
           echo "IMAGE_NAME=${{ github.repository }}" | sed 's/docker-//g' >> $GITHUB_ENV
+          echo "IMAGE_NAME=${{ github.repository }}" | sed 's/docker-//g' >> $GITHUB_OUTPUT
 
       # Generate env variable VERSION based on version.txt file
       - name: Generate release version
         id: version
         run: |
           cat ./version.txt | sed 's/^/VERSION=/g' >> $GITHUB_ENV
+          cat ./version.txt | sed 's/^/VERSION=/g' >> $GITHUB_OUTPUT
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
