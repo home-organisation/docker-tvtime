@@ -25,6 +25,9 @@ jobs:
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
+    
+    outputs:
+      image:  ${{ env.REGISTRY }}/${{ steps.image.outputs.IMAGE_NAME }}:${{ steps.version.outputs.VERSION }}
 
     steps:
       - name: Checkout repository
@@ -32,11 +35,13 @@ jobs:
 
       # Generate env variable IMAGE_NAME based on repository name
       - name: Generate image name
+        id: image
         run: |
           echo "IMAGE_NAME=${{ github.repository }}" | sed 's/docker-//g' >> $GITHUB_ENV
 
       # Generate env variable VERSION based on version.txt file
       - name: Generate release version
+        id: version
         run: |
           cat ./version.txt | sed 's/^/VERSION=/g' >> $GITHUB_ENV
 
@@ -114,10 +119,10 @@ jobs:
       - name: run Codefresh prommote pipeline
         uses: codefresh-io/codefresh-pipeline-runner@v8
         with:
-          args: '-v ENV=stage'
+          args: "-v ENV=stage -v IMAGE=${{needs.build.outputs.image}}"
         env:
           PIPELINE_NAME: 'media-front/promote'
-          TRIGGER_NAME: 'home-organisation/docker-tvtime'
+          TRIGGER_NAME: ${{ github.repository }}
           CF_API_KEY: ${{ secrets.CODEFRESH_TOKEN }}
     
   release:
