@@ -27,7 +27,7 @@ jobs:
       id-token: write
     
     outputs:
-      image:  ${{ env.REGISTRY }}/${{ steps.image.outputs.IMAGE_NAME }}:${{ steps.version.outputs.VERSION }}
+      image:  ${{ steps.meta.outputs.tags }}
 
     steps:
       - name: Checkout repository
@@ -78,6 +78,8 @@ jobs:
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{version}},value=v${{ env.VERSION }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -87,7 +89,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -118,7 +120,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: run Codefresh prommote pipeline
+      - name: run Codefresh promote pipeline
         uses: codefresh-io/codefresh-pipeline-runner@v8
         with:
           args: "-v ENV=stage -v IMAGE=${{needs.build.outputs.image}}"
@@ -171,7 +173,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: run Codefresh prommote pipeline
+      - name: run Codefresh promote pipeline
         uses: codefresh-io/codefresh-pipeline-runner@v8
         with:
           args: "-v ENV=prod -v IMAGE=${{needs.build.outputs.image}}"
