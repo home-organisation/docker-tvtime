@@ -103,31 +103,6 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
-      - name: report image to codefresh
-        if: github.event_name != 'pull_request'
-        continue-on-error: true
-        uses: codefresh-io/codefresh-report-image@latest
-        with:
-          # Codefresh token used to perform authentication with your account.  It is recommended to store as a secret variable. !! Committing a plain text token is a security risk. We highly recommend using encrypted secrets. !!
-          # Documentation - https://docs.github.com/en/actions/security-guides/encrypted-secrets
-          CF_API_KEY: ${{ secrets.CODEFRESH_TOKEN }}
-          # The name of the runtime that will perform the enrichment. All Integrations must configured on this runtime
-          CF_RUNTIME_NAME: 'codefresh-runtime-ovv'
-          # Image reported and enriched in Codefresh. Pass the [account-name]/[image-name]:[tag] built in your CI.
-          CF_IMAGE: ${{ steps.meta.outputs.tags }}
-          # The explicit ghcr authentication
-          CF_REGISTRY_USERNAME: ${{ github.actor }}
-          CF_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-          CF_REGISTRY_DOMAIN: ${{ env.REGISTRY }}
-          # Commit and Pull request data from this branch will be added to the image. Pass the Branch from the event payload used to trigger your action.
-          CF_GIT_BRANCH: ${{ github.ref_name }}
-          # Select the Issue tracking integration to use to enrich the image
-          #CF_ISSUE_TRACKING_INTEGRATION: 'home-organisation'
-          # Jira project ID, XX-1345. Specify one or more prefixes as a comma-separated list or as a regex.
-          #CF_JIRA_PROJECT_PREFIX: 'MEDIAFRONT'
-          # Search for issue IDs matching this string to associate with your image. Pass a commit message or branch from the event payload used to trigger your action.
-          #CF_JIRA_MESSAGE: ${{ github.event.head_commit.message }}
-
   promote_stage:
     if: ${{ github.event_name != 'pull_request' }}
     name: promote to stage
