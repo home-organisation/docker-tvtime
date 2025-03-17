@@ -1,0 +1,3 @@
+app:\n  version: null
+app:
+  version: ${VERSION}
