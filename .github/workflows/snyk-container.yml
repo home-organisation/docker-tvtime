@@ -11,7 +11,7 @@
 # issues, monitor images for newly disclosed vulnerabilities in Snyk and
 # fail PR checks for new vulnerabilities, see https://github.com/snyk/actions/
 
-name: Snyk Container Analysis
+name: Snyk Container
 
 on:
   push:
@@ -25,7 +25,7 @@ permissions:
   contents: read
 
 jobs:
-  snyk:
+  Analysis:
     permissions:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
@@ -52,3 +52,4 @@ jobs:
       uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: snyk.sarif
+        category: snyk
